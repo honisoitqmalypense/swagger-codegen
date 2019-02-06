@@ -176,7 +176,11 @@ public class Swagger {
             if (isFailure) {
                 throw new ApiException(code, res.getStatus(), getHeaders(res), res.getBody());
             } else if (returnType != null) {
-                return toReturnValue(res.getBody(), returnType, res.getHeader('Content-Type'));
+                String contentType = res.getHeader('Content-Type');
+                if (contentType == null) {
+                    contentType = res.getHeader('content-type');
+                }
+                return toReturnValue(res.getBody(), returnType, contentType);
             }
             return null;
         }
