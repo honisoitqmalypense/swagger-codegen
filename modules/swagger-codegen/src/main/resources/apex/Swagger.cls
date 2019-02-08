@@ -176,16 +176,16 @@ public class Swagger {
             if (isFailure) {
                 throw new ApiException(code, res.getStatus(), getHeaders(res), res.getBody());
             } else if (returnType != null) {
-                return toReturnValue(res.getBody(), returnType, getContentType(res));
+                return toReturnValue(res.getBody(), returnType, getHeaderIgnoreCase(res, 'content-type'));
             }
             return null;
         }
 
-        private String getContentType(HttpResponse res) {
+        private String getHeaderIgnoreCase(HttpResponse res, String header) {
             List<String> headerKeys = res.getHeaderKeys();
 
             for (String headerKey: headerKeys) {
-                if (headerKey.equalsIgnoreCase('content-type')) {
+                if (headerKey.equalsIgnoreCase(header)) {
                     return res.getHeader(headerKey);
                 }
             }
